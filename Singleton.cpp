@@ -29,6 +29,8 @@ class StudentManager{
                 students[i]=m;
                 students[count-1]=s;
                 students.pop_back();
+                break;
+                count--;
             }
         }
     }
@@ -41,10 +43,31 @@ class StudentManager{
             cout<<students[i]<<endl;
         }
     }
+       void clear() {
+        students.clear();
+        count = 0;
+    }
 
 };
 StudentManager* StudentManager::studentmanager = nullptr;
-int main(){
+
+
+TEST(StudentManagerTest, AddStudents) {
+    StudentManager* manager = StudentManager::getinstance();
+    manager->clear();  
+
+    manager->add("asraf");
+    manager->add("rifat");
+
+    EXPECT_EQ(manager->getStudentNumber(), 2);
+}
+
+TEST(StudentManagerTest, Equal) {
+    StudentManager* manager = StudentManager::getinstance();
+    StudentManager* manager1=StudentManager::getinstance();
+    EXPECT_EQ(manager1,manager);
+}
+int main(int argc,char **argv){
     StudentManager* studentmanager=StudentManager::getinstance();
     studentmanager->add("asraf");
     studentmanager->add("rifat");
@@ -53,6 +76,10 @@ int main(){
     studentmanager->add("sadik");
     studentmanager->remove("asif");
     studentmanager->display();
+    studentmanager->clear();
+
+    ::testing::InitGoogleTest(&argc,argv);
+    return RUN_ALL_TESTS();
 
 
 }
